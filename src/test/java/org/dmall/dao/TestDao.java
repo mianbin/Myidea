@@ -14,6 +14,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/12/14.
  */
@@ -96,6 +99,50 @@ public class TestDao {
         userQueryVo.setUserCustom(userCustom);
         int count = userMapper.queryUserCount(userQueryVo);
         System.out.println(count);
+    }
+
+    @Test
+    public void TestqueryUserCustom(){
+        UserQueryVo userQueryVo = new UserQueryVo();
+        UserCustom userCustom = new UserCustom();
+        userCustom.setUserName("root");
+        userQueryVo.setUserCustom(userCustom);
+        UserCustom userCustom1 = userMapper.queryUserCustom(userQueryVo);
+        System.out.println(userCustom1);
+    }
+
+    @Test/*这里面有个大坑，看mapper文件有说*/
+    public void TestqueryUserContainIfAndWhere(){
+        UserQueryVo userQueryVo = new UserQueryVo();
+        UserCustom userCustom = new UserCustom();
+        userCustom.setUserName("root");
+//      userCustom.setPassWord("mianbin");
+        userQueryVo.setUserCustom(userCustom);
+        User user = userMapper.queryUserContainIfAndWhere(userQueryVo);
+        System.out.println(user);
+    }
+
+    @Test
+    public void TestqueryUserContainSql(){
+        UserQueryVo userQueryVo = new UserQueryVo();
+        UserCustom userCustom = new UserCustom();
+        userCustom.setUserName("root");
+        userQueryVo.setUserCustom(userCustom);
+        User user = userMapper.queryUserContainSql(userQueryVo);
+        System.out.println(user);
+    }
+
+    @Test
+    public void TestqueryUserByForeach(){
+        UserQueryVo userQueryVo = new UserQueryVo();
+        UserCustom userCustom = new UserCustom();
+        userQueryVo.setUserCustom(userCustom);
+        List<Integer> list = new ArrayList<>();
+        list.add(1000);
+        list.add(1001);
+        userQueryVo.setIds(list);
+        List<User> users = userMapper.queryUserByForeach(userQueryVo);
+        System.out.println(users);
     }
 
 }

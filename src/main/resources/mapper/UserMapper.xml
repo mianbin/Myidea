@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.dmall.dao.UserMapper">
+    <!--
+        result的type是最终映射的java对象
+        id是resultMap的唯一标示符，一般是类名加RM
+    -->
+    <resultMap id="userCustomRM" type="org.dmall.entity.UserCustom">
+        <!--
+            column是查询出来的名字，如果数据库user_name则就是user_name，如果select user_name as name，就写name
+            property表示pojo里面的属性名
+        -->
+        <id column="user_name" property="userName"/>
+        <id column="pw" property="passWord"/>
+    </resultMap>
+
+    <!--sql片段要针对单表，这样可重用性才高,不要包含where-->
+    <sql id="query_user_where">
+        user_id,user_name,password
+    </sql>
 
     <select id="queryById" parameterType="int" resultType="org.dmall.entity.User">
         SELECT * FROM
@@ -16,7 +33,8 @@
               user_name = #{name}
     </select>
 
-    <select id="queryByUserQueryVo" parameterType="org.dmall.entity.UserQueryVo" resultType="org.dmall.entity.UserCustom">
+    <select id="queryByUserQueryVo" parameterType="org.dmall.entity.UserQueryVo"
+            resultType="org.dmall.entity.UserCustom">
         SELECT * FROM
           t_user
         WHERE
@@ -28,6 +46,73 @@
           t_user
         WHERE
           user_name = #{userCustom.userName}
+    </select>
+
+    <!--
+        一个简单的resultMap的例子
+        如果这个resultMap在另外的mapper文件里面，需要指定namespace
+    -->
+    <select id="queryUserCustom" parameterType="org.dmall.entity.UserQueryVo" resultMap="userCustomRM">
+        SELECT
+          user_id , user_name,password as pw
+        FROM
+          t_user
+        WHERE
+          user_name = #{userCustom.userName}
+
+    </select>
+
+    <!--这是一个包含if和where的例子-->
+    <select id="queryUserContainIfAndWhere" parameterType="org.dmall.entity.UserQueryVo" resultType="org.dmall.entity.User">
+        SELECT * FROM t_user
+        <where>
+            /*首先这个userCustom是个大坑，这个不能为and userCustom！=‘’ ，这是个类，会出错*/
+            <if test="userCustom!=null">
+                /*这里面同样是个大坑，不能写 #{userCustom.userName}要写userCustom.userName，不然判断都会出错，ognl已经取得值了，所以可以直接用*/
+                <if test="userCustom.userName != null">
+                    AND  user_name = #{userCustom.userName}
+                </if>
+
+                <if test="userCustom.passWord != null">
+                    AND  password = #{userCustom.passWord}
+                </if>
+            </if>
+
+        </where>
+
+    </select>
+
+    <select id="queryUserContainSql" parameterType="org.dmall.entity.UserQueryVo" resultType="org.dmall.entity.User">
+        SELECT
+          <include refid="query_user_where"/>
+        FROM  t_user
+        WHERE user_name = #{userCustom.userName}
+    </select>
+
+    <!--collection:表示vo中的集合属性， List ids = new ArrayList();中的ids
+    item：表示每次遍历的对象名，id
+    SELECT user_name as name FROM t_user WHERE last_ip is not NULL AND (user_id = 1000 or user_id = 1001)
+    还有种写法是select * from t_user where user_id in(1000,1001)
+    -->
+    <select id="queryUserByForeach" parameterType="org.dmall.entity.UserQueryVo" resultType="org.dmall.entity.User">
+        SELECT
+        <include refid="query_user_where"/>
+        FROM  t_user
+        <if test="ids != null">
+            <where>
+                <!--
+                    <foreach collection="ids" item="id" close=")" open="AND (" separator="or">
+                      user_id =#{id}
+                    </foreach>
+                -->
+
+                    <foreach collection="ids" item="id" open="user_id in(" close=")" separator=",">
+                        ${id}
+                    </foreach>
+
+                AND last_ip IS NOT NULL
+            </where>
+        </if>
     </select>
 
 </mapper>
