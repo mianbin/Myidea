@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- 开启驼峰自动映射 -->
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<!-- 使用jdbc自增 -->
+		<setting name="useGeneratedKeys" value="true" />
+		<!-- 默认就是true，这个意思是你数据库为name列名，如果你select name as title from table，就会把title存到entity里面去-->
+		<setting name="useColumnLabel" value="true" />
+	</settings>
+</configuration>

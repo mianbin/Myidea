@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="user" class="org.dmall.entity.User">
+        <property name="userName" value="勉斌"/>
+        <property name="passWord" value="root"/>
+    </bean>
+
+    <bean id="userConstructor" class="org.dmall.entity.User">
+        <constructor-arg index="0" value="mianbin"/>
+        <constructor-arg index="1" value="root"/>
+    </bean>
+
+    <bean id="wife" class="org.dmall.entity.Wife">
+        <property name="name" value="曹爽"/>
+        <property name="user">
+            <ref bean="user"/>
+        </property>
+    </bean>
+
+    <bean id="userList" class="org.dmall.entity.User">
+        <property name="listbean">
+            <list>
+                <value>曹爽</value>
+                <value>我想你</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>

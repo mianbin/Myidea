@@ -1,0 +1,19 @@
+CREATE TABLE t_user(
+user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+user_name varchar(32) NOT NULL COMMENT "用户名",
+password varchar(32) NOT NULL COMMENT "密码",
+last_visit datetime NOT NULL COMMENT "最后访问日期",
+last_ip VARCHAR(32) NOT NULL COMMENT "访问IP",
+key(user_name)
+)ENGINE InnoDB AUTO_INCREMENT = 1000 DEFAULT CHARSET = UTF8 COMMENT = "用户表";
+
+
+CREATE TABLE t_login_log(
+login_log_id INT AUTO_INCREMENT PRIMARY KEY,
+user_id INT  NOT NULL,
+ip varchar(32) NOT NULL,
+login_datetime datetime NOT NULL,
+key(user_id)
+)ENGINE InnoDB AUTO_INCREMENT = 1000 DEFAULT CHARSET= UTF8 COMMENT = "登陆日志";
+
+
