@@ -16,4 +16,11 @@
               user_name = #{name}
     </select>
 
+    <select id="queryByUserQueryVo" parameterType="org.dmall.entity.UserQueryVo" resultType="org.dmall.entity.UserCustom">
+        SELECT * FROM
+          t_user
+        WHERE
+          user_name=#{userQueryVo.userCustom.userName}
+    </select>
+
 </mapper>

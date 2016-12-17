@@ -10,7 +10,7 @@ public class UserQueryVo {
     //用户查询条件
     private UserCustom userCustom;
 
-    //可以包装其他信息，比如用户订单商品等
+    //可以包装其他信息，比如其他商品信息
 
 
     public UserCustom getUserCustom() {

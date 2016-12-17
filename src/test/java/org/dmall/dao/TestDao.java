@@ -1,6 +1,8 @@
 package org.dmall.dao;
 
 import org.dmall.entity.User;
+import org.dmall.entity.UserCustom;
+import org.dmall.entity.UserQueryVo;
 import org.dmall.entity.Wife;
 import org.dmall.spring.Annotation.AnnotationApplicationBeans;
 import org.junit.Test;
@@ -15,8 +17,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 /**
  * Created by Administrator on 2016/12/14.
  */
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = {"classpath*:spring/applicationContext*.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath*:spring/applicationContext*.xml"})
 public class TestDao {
 
     @Autowired
@@ -74,6 +76,16 @@ public class TestDao {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/applicationContext.xml");
         User userList = applicationContext.getBean("userList", User.class);
         System.out.println(userList);
+    }
+
+    @Test
+    public void TestqueryByUserQueryVo(){
+        UserQueryVo userQueryVo = new UserQueryVo();
+        UserCustom userCustom = new UserCustom();
+        userCustom.setUserName("root");
+        userQueryVo.setUserCustom(userCustom);
+        User user = userMapper.queryByUserQueryVo(userQueryVo);
+        System.out.println(user);
     }
 
 }
