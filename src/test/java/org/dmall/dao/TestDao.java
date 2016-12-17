@@ -88,4 +88,14 @@ public class TestDao {
         System.out.println(user);
     }
 
+    @Test
+    public void TestqueryUserCount(){
+        UserQueryVo userQueryVo = new UserQueryVo();
+        UserCustom userCustom = new UserCustom();
+        userCustom.setUserName("root");
+        userQueryVo.setUserCustom(userCustom);
+        int count = userMapper.queryUserCount(userQueryVo);
+        System.out.println(count);
+    }
+
 }

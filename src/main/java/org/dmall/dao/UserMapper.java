@@ -16,5 +16,6 @@ public interface UserMapper {
     /*这里用一个包装类进行查询*/
     public User queryByUserQueryVo(@Param("userQueryVo") UserQueryVo userQueryVo);
 
-
+    /*做个分页查询，所以先要搞个usercount*/
+    public int queryUserCount(UserQueryVo userQueryVo);
 }
