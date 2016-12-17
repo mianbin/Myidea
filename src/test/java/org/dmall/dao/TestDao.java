@@ -145,4 +145,9 @@ public class TestDao {
         System.out.println(users);
     }
 
+    @Test
+    public void TestNewBranchTestGit(){
+        System.out.println("第一次使用分支失败，并没有创建成功，这次继续");
+    }
+
 }
